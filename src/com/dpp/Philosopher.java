@@ -13,14 +13,18 @@ import java.util.concurrent.TimeUnit;
  */
 public class Philosopher extends Thread {
     private int id;
-    private Fork left, right;
-    private static Semaphore waiter = new Semaphore(4, true);
+    private Semaphore left, right;
+    private static Semaphore waiter;
     private int eatCouter = 0;
 
-    public Philosopher(int id, Fork left, Fork right) {
+    public Philosopher(int id, Semaphore left, Semaphore right) {
         this.id = id;
         this.left = left;
         this.right = right;
+    }
+    
+    public static void setWaiter(Semaphore waiter) {
+        Philosopher.waiter = waiter;
     }
     
     @Override
@@ -39,10 +43,6 @@ public class Philosopher extends Thread {
                 System.out.println("Przerywanie " + this);
             }
         }
-    }
-    
-    public void test() {
-        System.out.println(this + " left: " + left + " right: " + right);
     }
     
     public void think() throws InterruptedException {
